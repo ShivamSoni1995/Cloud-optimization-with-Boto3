@@ -1,0 +1,52 @@
+1️⃣ Create a Scheduled Event Rule in EventBridge
+
+AWS EventBridge (formerly CloudWatch Events) allows you to trigger the Lambda function on a cron schedule.
+Steps:
+
+    Go to AWS EventBridge
+        1.Open the AWS Management Console
+        2.Navigate to EventBridge
+        3.Click Rules → Create Rule
+
+    Set a Name & Description
+        4.Name: DeleteUnusedSnapshots
+        5.Description: Triggers Lambda to delete unused EBS snapshots.
+
+    Define the Schedule
+        6.Choose Schedule
+        7.Select Cron expression
+        8.Enter a cron schedule (see below)
+
+Example Cron Expressions
+Schedule	Cron Expression
+Every day at 12 AM UTC	0 0 * * ? *
+Every 6 hours	0 */6 * * ? *
+Every Sunday at 2 AM UTC	0 2 ? * 7 *
+
+    Choose the Lambda Target
+        9.Under Target, select Lambda function
+        10.Choose your Lambda function
+
+    Create the Rule
+        11.Click Create
+
+2️⃣ Modify IAM Permissions (if needed)
+
+Ensure your Lambda IAM role has permissions to manage snapshots. Attach this policy to the Lambda's IAM role:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeSnapshots",
+                "ec2:DescribeInstances",
+                "ec2:DescribeVolumes",
+                "ec2:DeleteSnapshot"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
